@@ -1,0 +1,11 @@
+/home/joan/ClionProjects/ApiClient/build/CMakeFiles/edit_cache.dir
+/home/joan/ClionProjects/ApiClient/build/CMakeFiles/rebuild_cache.dir
+/home/joan/ClionProjects/ApiClient/build/CMakeFiles/test.dir
+/home/joan/ClionProjects/ApiClient/build/CMakeFiles/ApiClient.dir
+/home/joan/ClionProjects/ApiClient/build/ext/CMakeFiles/test.dir
+/home/joan/ClionProjects/ApiClient/build/ext/CMakeFiles/edit_cache.dir
+/home/joan/ClionProjects/ApiClient/build/ext/CMakeFiles/rebuild_cache.dir
+/home/joan/ClionProjects/ApiClient/build/ext/ApiCodec/CMakeFiles/test.dir
+/home/joan/ClionProjects/ApiClient/build/ext/ApiCodec/CMakeFiles/rebuild_cache.dir
+/home/joan/ClionProjects/ApiClient/build/ext/ApiCodec/CMakeFiles/edit_cache.dir
+/home/joan/ClionProjects/ApiClient/build/ext/ApiCodec/CMakeFiles/libapicodec.dir

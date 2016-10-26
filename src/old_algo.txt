@@ -1,0 +1,73 @@
+    int nbPoints = 0;
+    int firstPointAngle = 0;
+    int lastPointAngle = 0;
+    bool firstPointAngleSet = false;
+    int iter = 0;
+    int t = 0;
+	while( !stopThreadAsked_ )
+    {
+        obstaclesMutex.lock();
+        obstacles.clear();
+        nbPoints = 0;
+        if(ha_lidar_packet_ptr_ != nullptr)
+        {
+            for( int i = 46; i < 226 ; i++ )
+            {
+
+                t = i - 45;
+                double previous_dist = static_cast<double>( ha_lidar_packet_ptr_->distance[ i-1 ] ) / 10.0f; // Distance en cm
+                double dist = static_cast<double>( ha_lidar_packet_ptr_->distance[ i ] ) / 10.0f; // Distance en cm
+
+                // Si < MAX_DISTANCE
+                if(dist < MAX_DISTANCE && dist > 3.0f && previous_dist < MAX_DISTANCE && dist > 3.0f)
+                {
+                    // Si d(p1, p2) < MIN_POINT_DISTANCE
+                    if(abs(previous_dist - dist) < MIN_POINT_DISTANCE)
+                    {
+                        nbPoints++;
+                        if(firstPointAngleSet == false)
+                        {
+                            firstPointAngle = t-1;
+                            firstPointAngleSet = true;
+                        }
+                    }
+                    // sinon
+                    else
+                    {
+                        // Fin obstacle
+                        if(nbPoints > NB_POINTS)
+                        {
+                            lastPointAngle = t;
+                            firstPointAngleSet = false;
+
+                            double firstAngleDist = static_cast<double>( ha_lidar_packet_ptr_->distance[firstPointAngle+45] ) / 10.0f; // Distance en cm
+                            double lastAngleDist  = static_cast<double>( ha_lidar_packet_ptr_->distance[lastPointAngle+45] ) / 10.0f; // Distance en cm
+                            cout << firstPointAngle << " " << lastPointAngle << " --- " << firstAngleDist << " " << lastAngleDist << " _ " << endl;
+                            double x1 = firstAngleDist * cos(  static_cast<double>( (firstPointAngle) * M_PI / 180. ) );
+                            double y1 = firstAngleDist * sin(  static_cast<double>( (firstPointAngle) * M_PI / 180. ) );
+                            double x2 = lastAngleDist * cos(  static_cast<double>( (lastPointAngle) * M_PI / 180. ) );
+                            double y2 = lastAngleDist * sin(  static_cast<double>( (lastPointAngle) * M_PI / 180. ) );
+
+                            cout << x1 << " " << y1 << " " << x2 << " " << y2 << endl;
+                            double minX1 = min(x1, x2);
+                            double maxX2 = max(x1, x2);
+                            double minY1 = min(y1, y2);
+                            double maxY2 = max(y1, y2);
+
+                            cout << minX1 << " " << minY1 << " " << maxX2 << " " << maxY2 << endl;
+                            struct obstacle obs = {minX1, minY1, maxX2, maxY2};
+                            obstacles.push_back(obs); 
+                            firstPointAngle = 0;
+                        }
+                        nbPoints = 0;
+
+                    }
+                }
+            }
+        }
+        if(obstacles.size() != 0)
+            cout << "NB_OBS : " << obstacles.size() << endl;
+        obstaclesMutex.unlock();
+    }
+
+

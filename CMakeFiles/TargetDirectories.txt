@@ -1,0 +1,2 @@
+/home/imerir/Documents/NaioImerirApiClient/CMakeFiles/ApiClient.dir
+/home/imerir/Documents/NaioImerirApiClient/ext/ApiCodec/CMakeFiles/libapicodec.dir

@@ -39,12 +39,23 @@
 #include "ApiCodec/HaGyroPacket.hpp"
 #include "ApiCodec/HaAcceleroPacket.hpp"
 
-#define OFFLINE 1
-#define MAX_DISTANCE 100
-#define MIN_POINT_DISTANCE 0.3
-#define NB_POINTS 5
+#define ROBOT_WIDTH 42
+#define MARGE_SECURITE 2
+#define OFFLINE 0
+#define MAX_DISTANCE 60
+#define MIN_POINT_DISTANCE 10
+#define NB_POINTS 3
 
 using namespace std;
+
+struct centreDistanceObstacle
+{
+    int indexObs1;
+    int indexObs2;
+    double distance;
+    int centre;
+    float poids;
+};
 
 struct p
 {
@@ -91,6 +102,9 @@ public:
 
 private:
     vector<struct obstacle> obstacles;
+
+    void manage_movement();
+    vector<double> computeXY(struct p &point);
 
 	// thread function
 	void graphic_thread( );
